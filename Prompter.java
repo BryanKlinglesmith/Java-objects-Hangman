@@ -13,5 +13,6 @@ class Prompter {
         String guessInput = scanner.nextLine();
         char guess = guessInput.charAt(0);
         return game.applyGuess(guess);
+        
     }
 }
