@@ -8,11 +8,23 @@ class Prompter {
     }
 
     public boolean promptForGuess() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter a letter:   ");
-        String guessInput = scanner.nextLine();
-        char guess = guessInput.charAt(0);
-        return game.applyGuess(guess);
-        
+
+        try(Scanner scanner = new Scanner(System.in)){
+            System.out.print("Enter a letter:   ");
+            String guessInput = scanner.nextLine();
+            char guess = guessInput.charAt(0);
+            boolean isHit = false;
+            try{
+                isHit = game.applyGuess(guess);
+            }catch(IllegalArgumentException iae) {
+                System.out.println(iae.getMessage());
+            }
+            
+            return isHit;
+        }
+    }
+
+    public void displayProgress() {
+        System.out.printf("You have %d left to solve:  %s%n", game.getRemainingTries(), game.getCurrentProgress());
     }
 }
