@@ -8,23 +8,34 @@ class Prompter {
     }
 
     public boolean promptForGuess() {
+        Scanner scanner = new Scanner(System.in);
+        boolean isHit = false;
+        boolean isAcceptable = false;
 
-        try(Scanner scanner = new Scanner(System.in)){
+        do {
             System.out.print("Enter a letter:   ");
             String guessInput = scanner.nextLine();
-            char guess = guessInput.charAt(0);
-            boolean isHit = false;
+
             try{
-                isHit = game.applyGuess(guess);
+                isHit = game.applyGuess(guessInput);
+                isAcceptable = true;
             }catch(IllegalArgumentException iae) {
-                System.out.println(iae.getMessage());
+                System.out.printf("%s.  Please try again. %n", iae.getMessage());
             }
-            
-            return isHit;
-        }
+        } while(! isAcceptable);
+        return isHit;
+
     }
 
     public void displayProgress() {
-        System.out.printf("You have %d left to solve:  %s%n", game.getRemainingTries(), game.getCurrentProgress());
+        System.out.printf("You have %d tries left to solve:  %s%n", game.getRemainingTries(), game.getCurrentProgress());
+    }
+
+    public void displayOutcome() {
+        if (game.isWon()) {
+            System.out.printf("Congratulations You Win!! You guessed %s with %d tries remaining. %n", game.getAnswer(), game.getRemainingTries());
+        }else {
+            System.out.printf("Sorry, you lose. The word was %s.  %n", game.getAnswer());
+        }
     }
 }
